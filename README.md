@@ -20,8 +20,6 @@ Print your name in style
 Get the library:
 ```bash
 $ go get github.com/arsham/figurine
-$ glide install
-$ go install
 ```
 
 ## Usage

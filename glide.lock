@@ -1,0 +1,14 @@
+hash: 5db8f9ed703621bffd1e2a6294ba38a4b1ffb2e8408e933eec71a8caeb198b85
+updated: 2018-04-20T19:09:41.495891324+01:00
+imports:
+- name: github.com/arsham/rainbow
+  version: 6024a935ee28effe940683d88e14742251f6c450
+  subpackages:
+  - rainbow
+- name: github.com/common-nighthawk/go-figure
+  version: 2d3c686981b48f9d6022181dc810381325b16b24
+- name: github.com/rakyll/statik
+  version: fcdcb7b85139b8b9ca1d8ef1d98d8593e90d117f
+  subpackages:
+  - fs
+testImports: []

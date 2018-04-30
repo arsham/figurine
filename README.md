@@ -17,7 +17,10 @@ Print your name in style
 
 ## Installation
 
-Get the library:
+You can download the latest binary from
+[here](https://github.com/arsham/figurine/releases), or you can compile from
+source:
+
 ```bash
 $ go get github.com/arsham/figurine
 ```
@@ -26,9 +29,24 @@ $ go get github.com/arsham/figurine
 
 Every time the application is called, it chooses a random font for rendering the
 message. Pass the message you want to decorate as arguments.
-
 ```bash
-$ figurine Arsham
+$ figurine Some Text
+```
+
+You can print available fonts:
+```bash
+$ figurine -l
+$ figurine -l -s
+```
+
+To set a font:
+```bash
+$ figurine -f "Poison.flf" Some Text
+```
+
+To get a list of available arguments:
+```bash
+$ figurine -h
 ```
 
 This application is very light weight, so feel free to add it to your

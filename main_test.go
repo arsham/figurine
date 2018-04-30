@@ -219,7 +219,6 @@ var fontNames = []string{
 	"/Graffiti.flf",
 	"/Greek.flf",
 	"/Henry 3D.flf",
-	"/Hex.flf",
 	"/Hieroglyphs.flf",
 	"/Hollywood.flf",
 	"/Horizontal Left.flf",

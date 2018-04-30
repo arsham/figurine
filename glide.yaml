@@ -3,3 +3,4 @@ import:
 - package: github.com/common-nighthawk/go-figure
 - package: github.com/rakyll/statik
 - package: github.com/arsham/rainbow
+- package: github.com/spf13/cobra

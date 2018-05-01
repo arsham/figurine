@@ -2,11 +2,12 @@ flf2a$ 4 4 10 63 13 0 24511 0
 Author: Marcin `stforek` Glinski
 Date: 2003/6/15 20:02:23
 Version: 1.0
+Modifier: Arsham Shirvani
 -------------------------------------------------
 
-* 2003-06-15	Changed: CDPQRSY6%@
-		  Added: $/=\|_{}
-* 2003-06-09	  Added: A-Z 0-9 !@%^&*()-+[]()`'":;~?<>
+* 2003-06-15  Changed: CDPQRSY6%@
+      Added: $/=\|_{}
+* 2003-06-09    Added: A-Z 0-9 !@%^&*()-+[]()`'":;~?<>
 
 
 ---------------------------------------------------
@@ -15,7 +16,6 @@ export assistant.              [http://www.jave.de]
 $ #
 $ #
 $ #
-$ ##
   _  #
  / \ #
  \_/ #

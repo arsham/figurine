@@ -1,7 +1,8 @@
 flf2a$ 9 8 14 0 16 0 16255 0
 Author : Ralph Bluecoat
-Date   : 2005/8/2 
+Date   : 2005/8/2
 Version: 1.0
+Modifier: Arsham Shirvani
 -------------------------------------------------
 
 -------------------------------------------------
@@ -13,7 +14,7 @@ modifier's name is placed on a comment line.
 
 ---
 
-Font modified June 17, 2007 by patorjk 
+Font modified June 17, 2007 by patorjk
 This was to widen the space character and fix letter spacing.
 $  $$#
 $  $$#
@@ -23,7 +24,6 @@ $  $$#
 $  $$#
 $  $$#
 $  $$#
-$  $$##
 !$#
  $#
  $#

@@ -3,6 +3,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GoDoc](https://godoc.org/github.com/arsham/figurine?status.svg)](http://godoc.org/github.com/arsham/figurine)
 [![Go Report Card](https://goreportcard.com/badge/github.com/arsham/figurine)](https://goreportcard.com/report/github.com/arsham/figurine)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Farsham%2Ffigurine.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Farsham%2Ffigurine?ref=badge_shield)
 
 Print your name in style
 
@@ -61,3 +62,6 @@ Use of this source code is governed by the Apache 2.0 license. License that can
 be found in the [LICENSE](./LICENSE) file.
 
 [rainbow]: https://github.com/arsham/rainbow
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Farsham%2Ffigurine.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Farsham%2Ffigurine?ref=badge_large)

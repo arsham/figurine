@@ -1,8 +1,8 @@
 hash: 0aaec6066a6ddf33c6347c6e391e46707eb76f52c16af257c6018f2fd4b735fa
-updated: 2018-04-30T10:14:46.15157335+01:00
+updated: 2018-06-16T16:32:11.44585828+01:00
 imports:
 - name: github.com/arsham/rainbow
-  version: 6024a935ee28effe940683d88e14742251f6c450
+  version: ee0cd487579a70168ae7c9312bcbe27aab101097
   subpackages:
   - rainbow
 - name: github.com/common-nighthawk/go-figure
@@ -24,37 +24,35 @@ imports:
 - name: github.com/inconshreveable/mousetrap
   version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
 - name: github.com/magiconair/properties
-  version: 2c9e9502788518c97fe44e8955cd069417ee89df
-- name: github.com/mitchellh/go-homedir
-  version: b8bc1bf767474819792c23f32d8286a45736f1c6
+  version: c2353362d570a7bfa228149c62842019201cfb71
 - name: github.com/mitchellh/mapstructure
-  version: 00c29f56e2386353d58c599509e8dc3801b0d716
+  version: bb74f1db0675b241733089d5a1faa5dd8b0ef57b
 - name: github.com/pelletier/go-toml
-  version: 66540cf1fcd2c3aee6f6787dfa32a6ae9a870f12
+  version: c01d1270ff3e442a8a57cddc1c92dc1138598194
 - name: github.com/rakyll/statik
-  version: fcdcb7b85139b8b9ca1d8ef1d98d8593e90d117f
+  version: eab4de8dac7ec0cb3a6d9218d95ffe441832cb36
   subpackages:
   - fs
 - name: github.com/spf13/afero
-  version: 63644898a8da0bc22138abf860edaf5277b6102e
+  version: 787d034dfe70e44075ccc060d346146ef53270ad
   subpackages:
   - mem
 - name: github.com/spf13/cast
   version: 8965335b8c7107321228e3e3702cab9832751bac
 - name: github.com/spf13/cobra
-  version: ef82de70bb3f60c65fb8eebacbb2d122ef517385
+  version: 1e58aa3361fd650121dceeedc399e7189c05674a
 - name: github.com/spf13/jwalterweatherman
   version: 7c0cea34c8ece3fbeb2b27ab9b59511d360fb394
 - name: github.com/spf13/pflag
-  version: 583c0c0531f06d5278b7d917446061adc344b5cd
+  version: 3ebe029320b2676d667ae88da602a5f854788a8a
 - name: github.com/spf13/viper
-  version: 8dc2790b029dc41e2b8ff772c63c26adbb1db70d
+  version: 15738813a09db5c8e5b60a19d67d3f9bd38da3a4
 - name: golang.org/x/sys
-  version: f67ecc163a74fbeea4cb1db0a101dcd07201464a
+  version: 6c888cc515d3ed83fc103cf1d84468aad274b0a7
   subpackages:
   - unix
 - name: golang.org/x/text
-  version: 7922cc490dd5a7dbaa7fd5d6196b49db59ac042f
+  version: 5c1cf69b5978e5a34c5f9ba09a83e56acc4b7877
   subpackages:
   - transform
   - unicode/norm

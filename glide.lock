@@ -1,16 +1,18 @@
-hash: 0aaec6066a6ddf33c6347c6e391e46707eb76f52c16af257c6018f2fd4b735fa
-updated: 2018-06-16T16:32:11.44585828+01:00
+hash: 4294e3c5f86081a2db1a5bfca003ec1e910ffae577b931c57439f528d700bd20
+updated: 2018-10-16T22:48:08.679344934+01:00
 imports:
 - name: github.com/arsham/rainbow
-  version: ee0cd487579a70168ae7c9312bcbe27aab101097
+  version: 708cb3d3389975aea07ba9793c04d4d209640b36
   subpackages:
   - rainbow
+- name: github.com/arsham/strings
+  version: d1b453ead28db17f0af10a311818a8e03c14387e
 - name: github.com/common-nighthawk/go-figure
-  version: 2d3c686981b48f9d6022181dc810381325b16b24
+  version: 18b2b544842cab16f3ff418fb5290d8f2896a069
 - name: github.com/fsnotify/fsnotify
-  version: c2828203cd70a50dcccfb2761f8b1f8ceef9a8e9
+  version: ccc981bf80385c528a65fbfdd49bf2d8da22aa23
 - name: github.com/hashicorp/hcl
-  version: ef8a98b0bbce4a65b5aa4c368430a80ddc533168
+  version: 65a6292f0157eff210d03ed1bf6c59b190b8b906
   subpackages:
   - hcl/ast
   - hcl/parser
@@ -26,33 +28,35 @@ imports:
 - name: github.com/magiconair/properties
   version: c2353362d570a7bfa228149c62842019201cfb71
 - name: github.com/mitchellh/mapstructure
-  version: bb74f1db0675b241733089d5a1faa5dd8b0ef57b
+  version: 3536a929edddb9a5b34bd6861dc4a9647cb459fe
 - name: github.com/pelletier/go-toml
-  version: c01d1270ff3e442a8a57cddc1c92dc1138598194
+  version: 81a861c69d25a841d0c4394f0e6f84bc8c5afae0
+- name: github.com/pkg/errors
+  version: 2233dee583dcf88f3c8b22cb7a33f05a499800d8
 - name: github.com/rakyll/statik
-  version: eab4de8dac7ec0cb3a6d9218d95ffe441832cb36
+  version: 1355192d24db2566a83c3914e187e2a7e7679832
   subpackages:
   - fs
 - name: github.com/spf13/afero
-  version: 787d034dfe70e44075ccc060d346146ef53270ad
+  version: d40851caa0d747393da1ffb28f7f9d8b4eeffebd
   subpackages:
   - mem
 - name: github.com/spf13/cast
   version: 8965335b8c7107321228e3e3702cab9832751bac
 - name: github.com/spf13/cobra
-  version: 1e58aa3361fd650121dceeedc399e7189c05674a
+  version: 8d114be902bc9f08717804830a55c48378108a28
 - name: github.com/spf13/jwalterweatherman
-  version: 7c0cea34c8ece3fbeb2b27ab9b59511d360fb394
+  version: 103a6da826d08544f49833dabd4f1cdf8a1038bb
 - name: github.com/spf13/pflag
-  version: 3ebe029320b2676d667ae88da602a5f854788a8a
+  version: 298182f68c66c05229eb03ac171abe6e309ee79a
 - name: github.com/spf13/viper
-  version: 15738813a09db5c8e5b60a19d67d3f9bd38da3a4
+  version: 62edee319679b6ceaec16de03b966102d2dea709
 - name: golang.org/x/sys
-  version: 6c888cc515d3ed83fc103cf1d84468aad274b0a7
+  version: fa43e7bc11baaae89f3f902b2b4d832b68234844
   subpackages:
   - unix
 - name: golang.org/x/text
-  version: 5c1cf69b5978e5a34c5f9ba09a83e56acc4b7877
+  version: 4d1c5fb19474adfe9562c9847ba425e7da817e81
   subpackages:
   - transform
   - unicode/norm

@@ -1,4 +1,4 @@
-package: github.com/arsham/myfigure
+package: github.com/arsham/figurine
 import:
 - package: github.com/common-nighthawk/go-figure
 - package: github.com/rakyll/statik

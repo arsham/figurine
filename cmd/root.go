@@ -92,7 +92,7 @@ func withFont(input, fontName string) {
 	buf := new(bytes.Buffer)
 	figure.Write(buf, myFigure)
 
-	seed := int(rand.Int31n(256))
+	seed := int64(rand.Int31n(256))
 	l := rainbow.Light{
 		Reader: buf,
 		Writer: os.Stdout,

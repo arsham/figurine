@@ -27,12 +27,12 @@ func Write(out io.Writer, msg, fontName string) error {
 	if err != nil {
 		return errors.Wrap(err, fontName)
 	}
-	buf := new(bytes.Buffer)
+	buf := &bytes.Buffer{}
 	myFigure := figure.NewFigureWithFont(msg, font, true)
 	figure.Write(buf, myFigure)
 	l := &rainbow.Light{
 		Writer: out,
-		Seed:   int64(rand.Int63n(256)),
+		Seed:   rand.Int63n(256),
 	}
 	if _, err := io.Copy(l, buf); err != nil {
 		return err

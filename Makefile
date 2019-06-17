@@ -3,10 +3,14 @@ RELEADE_NAME=figurine
 DEPLOY_FOLDER=deploy
 CHECKSUM_FILE=CHECKSUM
 
-.PHONY: deps
-deps:
-	@go get github.com/Masterminds/glide
-	@glide install
+.PHONY: install
+install:
+	go install
+
+.PHONY: test
+test:
+	@zsh -c "go test ./...; repeat 100 printf '#'; echo"
+	@reflex -d none -r "\.go$$" -- zsh -c "go test ./...; repeat 100 printf '#'"
 
 .PHONY: tmpfolder
 tmpfolder:
@@ -38,16 +42,11 @@ windows: tmpfolder
 	@rm $(DEPLOY_FOLDER)/$(RELEADE_NAME).exe
 
 .PHONY: release
-release: tmpfolder deps linux darwin windows
+release: tmpfolder linux darwin windows
 
 .PHONY: clean
 clean:
+	go clean
+	go clean -cache
+	go clean -modcache
 	rm -rf $(DEPLOY_FOLDER)
-
-.PHONY: install
-install: deps
-	go install
-
-.PHONY: update
-update: deps
-	git pull origin master

@@ -20,7 +20,6 @@ import (
 )
 
 var (
-	cfgFile       string
 	defaultString = "Arsham"
 	fontName      string
 	visualMode    bool

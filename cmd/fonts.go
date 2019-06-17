@@ -189,7 +189,7 @@ var fontNames = []string{
 	"Octal.flf",
 	"Ogre.flf",
 	"Old Banner.flf",
-	"Patorjk's Cheese.flf",
+	"Patorjks Cheese.flf",
 	"Patorjk-HeX.flf",
 	"Pawp.flf",
 	"Peaks Slant.flf",

@@ -4,8 +4,8 @@ DEPLOY_FOLDER=deploy
 CHECKSUM_FILE=CHECKSUM
 
 .PHONY: install
-install:
-	go install
+install: ## Install the binary.
+	@go install -trimpath -ldflags="-s -w"
 
 .PHONY: test
 test:
@@ -19,7 +19,8 @@ tmpfolder:
 
 .PHONY: linux
 linux: tmpfolder
-	@GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME) main.go
+linux: ## Build for GNU/Linux.
+	@GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME) .
 	@tar -czf $(DEPLOY_FOLDER)/figurine_linux_$(TARGET).tar.gz $(DEPLOY_FOLDER)/$(RELEADE_NAME)
 	@cd $(DEPLOY_FOLDER) ; sha256sum figurine_linux_$(TARGET).tar.gz >> $(CHECKSUM_FILE)
 	@echo "Linux target:" $(DEPLOY_FOLDER)/figurine_linux_$(TARGET).tar.gz
@@ -27,7 +28,8 @@ linux: tmpfolder
 
 .PHONY: darwin
 darwin: tmpfolder
-	@GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME) main.go
+darwin: ## Build for Mac.
+	@GOOS=darwin GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME) .
 	@tar -czf $(DEPLOY_FOLDER)/figurine_darwin_$(TARGET).tar.gz $(DEPLOY_FOLDER)/$(RELEADE_NAME)
 	@cd $(DEPLOY_FOLDER) ; sha256sum figurine_darwin_$(TARGET).tar.gz >> $(CHECKSUM_FILE)
 	@echo "Darwin target:" $(DEPLOY_FOLDER)/figurine_darwin_$(TARGET).tar.gz
@@ -35,10 +37,11 @@ darwin: tmpfolder
 
 .PHONY: windows
 windows: tmpfolder
-	@GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME).exe main.go
+windows: ## Build for windoze.
+	@GOOS=windows GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME).exe .
 	@zip -r $(DEPLOY_FOLDER)/figurine_windows_$(TARGET).zip $(DEPLOY_FOLDER)/$(RELEADE_NAME).exe
 	@cd $(DEPLOY_FOLDER) ; sha256sum figurine_windows_$(TARGET).zip >> $(CHECKSUM_FILE)
-	@echo "Darwin target:" $(DEPLOY_FOLDER)/figurine_windows_$(TARGET).zip
+	@echo "Windows target:" $(DEPLOY_FOLDER)/figurine_windows_$(TARGET).zip
 	@rm $(DEPLOY_FOLDER)/$(RELEADE_NAME).exe
 
 .PHONY: release

@@ -6,11 +6,10 @@ package figurine_test
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"testing"
 
 	"github.com/arsham/figurine/figurine"
-	_ "github.com/arsham/figurine/statik"
 )
 
 func BenchmarkGenerationPart(b *testing.B) {
@@ -21,10 +20,11 @@ func BenchmarkGenerationPart(b *testing.B) {
 		"KjV8HeLaSV0MDiZFyXAg2XDCC MZv9O5d 1Z86mJ qw2d7Z0CAT7MrAunZH V74YD omlrSwpjXY2SxS6",
 	}
 	for _, bc := range bcs {
+		bc := bc
 		name := fmt.Sprintf("%d", len(bc))
 		b.Run(name, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				err := figurine.Write(ioutil.Discard, bc, "Decimal.flf")
+				err := figurine.Write(io.Discard, bc, "Decimal.flf")
 				if err != nil {
 					b.Fatal(err)
 				}

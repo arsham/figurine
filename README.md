@@ -22,31 +22,35 @@ You can download the latest binary from
 source:
 
 ```bash
-$ go get github.com/arsham/figurine
+go install github.com/arsham/figurine@latest
 ```
 
 ## Usage
 
 Every time the application is called, it chooses a random font for rendering the
 message. Pass the message you want to decorate as arguments.
+
 ```bash
-$ figurine Some Text
+figurine Some Text
 ```
 
 You can print available fonts:
+
 ```bash
-$ figurine -l
-$ figurine -l -s
+figurine -l
+figurine -l -s
 ```
 
 To set a font:
+
 ```bash
-$ figurine -f "Poison.flf" Some Text
+figurine -f "Poison.flf" Some Text
 ```
 
 To get a list of available arguments:
+
 ```bash
-$ figurine -h
+figurine -h
 ```
 
 This application is very light weight, so feel free to add it to your
@@ -54,9 +58,11 @@ This application is very light weight, so feel free to add it to your
 message.
 
 ## See Also
+
 See also [Rainbow][rainbow], which is the library that colours the output.
 
 ## License
+
 Use of this source code is governed by the Apache 2.0 license. License that can
 be found in the [LICENSE](./LICENSE) file.
 

@@ -1,8 +1,9 @@
 # Figurine
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![GoDoc](https://godoc.org/github.com/arsham/figurine?status.svg)](http://godoc.org/github.com/arsham/figurine)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/arsham/figurine)](https://pkg.go.dev/github.com/arsham/figurine)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/arsham/figurine)
 [![Go Report Card](https://goreportcard.com/badge/github.com/arsham/figurine)](https://goreportcard.com/report/github.com/arsham/figurine)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Print your name in style
 

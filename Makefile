@@ -1,19 +1,48 @@
+help: ## Show help messages.
+	@grep -E '^[0-9a-zA-Z_-]+:(.*?## .*)?$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+run="."
+dir="./..."
+short="-short"
+flags=""
+timeout=40s
+
 TARGET=$(shell git describe --abbrev=0 --tags)
 RELEADE_NAME=figurine
 DEPLOY_FOLDER=deploy
 CHECKSUM_FILE=CHECKSUM
+MAKEFLAGS += -j1
 
 .PHONY: install
 install: ## Install the binary.
 	@go install -trimpath -ldflags="-s -w"
 
-.PHONY: test
-test:
-	@zsh -c "go test ./...; repeat 100 printf '#'; echo"
-	@reflex -d none -r "\.go$$" -- zsh -c "go test ./...; repeat 100 printf '#'"
+.PHONY: unittest
+unittest: ## Run unit tests in watch mode. You can set: [run, timeout, short, dir, flags]. Example: make unittest flags="-race".
+	@echo "running tests on $(run). waiting for changes..."
+	@-zsh -c "go test -trimpath --timeout=$(timeout) $(short) $(dir) -run $(run) $(flags); repeat 100 printf '#'; echo"
+	@reflex -d none -r "(\.go$$)|(go.mod)" -- zsh -c "go test -trimpath --timeout=$(timeout) $(short) $(dir) -run $(run) $(flags); repeat 100 printf '#'"
+
+.PHONY: lint
+lint: ## Run linters.
+	go fmt ./...
+	go vet ./...
+	golangci-lint run ./...
+
+.PHONY: dependencies
+dependencies: ## Install dependencies requried for development operations.
+	@go get -u github.com/cespare/reflex
+	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.44.2
+	@go mod tidy
+
+.PHONY: clean
+clean: ## Clean test caches and tidy up modules.
+	@go clean -testcache
+	@go mod tidy
+	@rm -rf $(DEPLOY_FOLDER)
 
 .PHONY: tmpfolder
-tmpfolder:
+tmpfolder: ## Create the temporary folder.
 	@mkdir -p $(DEPLOY_FOLDER)
 	@rm -rf $(DEPLOY_FOLDER)/$(CHECKSUM_FILE) 2> /dev/null
 
@@ -45,11 +74,5 @@ windows: ## Build for windoze.
 	@rm $(DEPLOY_FOLDER)/$(RELEADE_NAME).exe
 
 .PHONY: release
+release: ## Create releases for Linux, Mac, and windoze.
 release: tmpfolder linux darwin windows
-
-.PHONY: clean
-clean:
-	go clean
-	go clean -cache
-	go clean -modcache
-	rm -rf $(DEPLOY_FOLDER)

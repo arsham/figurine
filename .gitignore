@@ -34,5 +34,5 @@ _testmain.go
 .glide/
 
 vendor/
-*.coverprofile
 deploy/
+tmp/

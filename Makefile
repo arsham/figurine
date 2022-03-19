@@ -1,5 +1,5 @@
 help: ## Show help messages.
-	@grep -E '^[0-9a-zA-Z_-]+:(.*?## .*)?$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[0-9a-zA-Z_-]+:(.*?## .*)?$$' $(MAKEFILE_LIST) | sed 's/^Makefile://' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 run="."
 dir="./..."
@@ -31,8 +31,8 @@ lint: ## Run linters.
 
 .PHONY: dependencies
 dependencies: ## Install dependencies requried for development operations.
-	@go get -u github.com/cespare/reflex
-	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.44.2
+	@go install github.com/cespare/reflex@latest
+	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.45.0
 	@go mod tidy
 
 .PHONY: clean

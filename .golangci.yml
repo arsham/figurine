@@ -1,6 +1,36 @@
+service:
+  golangci-lint-version: 1.45.x
+
 linters-settings:
+  funlen:
+    lines: 100
+    statements: 50
+  cyclop:
+    skip-tests: true
+    max-complexity: 30
+    package-average: 5
+  gocyclo:
+    min-complexity: 15
+  gofumpt:
+    lang-version: "1.18"
+  goimports:
+    local-prefixes: github.com/golangci/golangci-lint
+  goconst:
+    min-len: 2
+    min-occurrences: 3
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+  godot:
+    capital: true
+  gosimple:
+    go: "1.18"
+    checks: ["all"]
   govet:
-    check-shadowing: true
     settings:
       printf:
         funcs:
@@ -9,34 +39,49 @@ linters-settings:
           - (github.com/golangci/golangci-lint/pkg/logutils.Log).Errorf
           - (github.com/golangci/golangci-lint/pkg/logutils.Log).Fatalf
     enable:
+      - assign
+      - atomic
+      - atomicalign
+      - bools
+      - buildtag
+      - cgocall
+      - composites
+      - copylocks
+      - deepequalerrors
+      - errorsas
       - fieldalignment
-  golint:
-    min-confidence: 0
-  gocyclo:
-    min-complexity: 15
+      - findcall
+      - framepointer
+      - httpresponse
+      - ifaceassert
+      - loopclosure
+      - lostcancel
+      - nilfunc
+      - printf
+      - reflectvaluecompare
+      - shift
+      - sigchanyzer
+      - sortslice
+      - stdmethods
+      - stringintconv
+      - structtag
+      - testinggoroutine
+      - tests
+      - unmarshal
+      - unreachable
+      - unsafeptr
+      - unusedresult
+
   maligned:
     suggest-new: true
-  goconst:
-    min-len: 2
-    min-occurrences: 2
   misspell:
     locale: UK
-  lll:
-    line-length: 140
-  goimports:
-    local-prefixes: github.com/golangci/golangci-lint
-  gocritic:
-    enabled-tags:
-      - diagnostic
-      - experimental
-      - opinionated
-      - performance
-      - style
-  funlen:
-    lines: 100
-    statements: 50
-  godot:
-    capital: true
+  staticcheck:
+    go: "1.18"
+    checks: ["all"]
+  stylecheck:
+    go: "1.18"
+    checks: ["all"]
   unparam:
     check-exported: true
 
@@ -51,25 +96,28 @@ issues:
   exclude-use-default: false
 
 run:
+  timeout: 5m
   skip-dirs:
-    - model
     - tmp
     - bin
     - scripts
-
+  allow-parallel-runners: true
   tests: true
   build-tags:
     - integration
 
 linters:
   enable:
+    - bidichk
     - bodyclose
+    - cyclop
     - deadcode
     - depguard
     - dogsled
     - dupl
     - durationcheck
     - errcheck
+    - errname
     - errorlint
     - exportloopref
     - forcetypeassert
@@ -78,7 +126,8 @@ linters:
     - gocritic
     - gocyclo
     - godot
-    - godox
+    - gofmt
+    - gofumpt
     - goprintffuncname
     - gosimple
     - govet
@@ -87,13 +136,17 @@ linters:
     - nakedret
     - nestif
     - nilerr
+    - noctx
     - prealloc
+    - predeclared
+    - promlinter
     - revive
     - rowserrcheck
     - sqlclosecheck
     - staticcheck
     - structcheck
     - stylecheck
+    - tenv
     - tparallel
     - typecheck
     - unconvert
@@ -102,10 +155,3 @@ linters:
     - varcheck
     - wastedassign
     - whitespace
-
-# golangci.com configuration
-# https://github.com/golangci/golangci/wiki/Configuration
-service:
-  golangci-lint-version: 1.45.x
-  prepare:
-    - echo "here I can run custom commands, but no preparation needed for this repo"

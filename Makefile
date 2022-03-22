@@ -54,7 +54,7 @@ tmpfolder: ## Create the temporary folder.
 .PHONY: linux
 linux: tmpfolder
 linux: ## Build for GNU/Linux.
-	@GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME) .
+	@GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME) .
 	@tar -czf $(DEPLOY_FOLDER)/figurine_linux_$(TARGET).tar.gz $(DEPLOY_FOLDER)/$(RELEADE_NAME)
 	@cd $(DEPLOY_FOLDER) ; sha256sum figurine_linux_$(TARGET).tar.gz >> $(CHECKSUM_FILE)
 	@echo "Linux target:" $(DEPLOY_FOLDER)/figurine_linux_$(TARGET).tar.gz
@@ -63,7 +63,7 @@ linux: ## Build for GNU/Linux.
 .PHONY: darwin
 darwin: tmpfolder
 darwin: ## Build for Mac.
-	@GOOS=darwin GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME) .
+	@GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME) .
 	@tar -czf $(DEPLOY_FOLDER)/figurine_darwin_$(TARGET).tar.gz $(DEPLOY_FOLDER)/$(RELEADE_NAME)
 	@cd $(DEPLOY_FOLDER) ; sha256sum figurine_darwin_$(TARGET).tar.gz >> $(CHECKSUM_FILE)
 	@echo "Darwin target:" $(DEPLOY_FOLDER)/figurine_darwin_$(TARGET).tar.gz
@@ -72,7 +72,7 @@ darwin: ## Build for Mac.
 .PHONY: windows
 windows: tmpfolder
 windows: ## Build for windoze.
-	@GOOS=windows GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME).exe .
+	@GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME).exe .
 	@zip -r $(DEPLOY_FOLDER)/figurine_windows_$(TARGET).zip $(DEPLOY_FOLDER)/$(RELEADE_NAME).exe
 	@cd $(DEPLOY_FOLDER) ; sha256sum figurine_windows_$(TARGET).zip >> $(CHECKSUM_FILE)
 	@echo "Windows target:" $(DEPLOY_FOLDER)/figurine_windows_$(TARGET).zip
@@ -82,7 +82,6 @@ windows: ## Build for windoze.
 release: ## Create releases for Linux, Mac, and windoze.
 release: tmpfolder linux darwin windows
 
-
 .PHONY: coverage
 coverage: ## Show the test coverage on browser.
 	go test -covermode=count -coverprofile=coverage.out ./...
@@ -90,7 +89,7 @@ coverage: ## Show the test coverage on browser.
 	go tool cover -html=coverage.out
 
 .PHONY: audit
-audit:
+audit: ## Audit the code for updates, vulnerabilities and binary weight.
 	go list -u -m -json all | go-mod-outdated -update -direct
 	go list -json -m all | nancy sleuth
 	goweight | head -n 20

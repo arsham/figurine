@@ -6,6 +6,8 @@ dir="./..."
 short="-short"
 flags=""
 timeout=40s
+build_tag=$(shell git describe --abbrev=0 --tags)
+current_sha=$(shell git rev-parse --short HEAD)
 
 TARGET=$(shell git describe --abbrev=0 --tags)
 RELEADE_NAME=figurine
@@ -15,7 +17,7 @@ MAKEFLAGS += -j1
 
 .PHONY: install
 install: ## Install the binary.
-	@go install -trimpath -ldflags="-s -w"
+	@go install -trimpath -ldflags="-s -w -X main.version=$(build_tag) -X main.currentSha=$(current_sha)"
 
 .PHONY: unittest
 unittest: ## Run unit tests in watch mode. You can set: [run, timeout, short, dir, flags]. Example: make unittest flags="-race".
@@ -32,7 +34,7 @@ lint: ## Run linters.
 .PHONY: dependencies
 dependencies: ## Install dependencies requried for development operations.
 	@go install github.com/cespare/reflex@latest
-	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.45.0
+	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.45.2
 	@go install github.com/psampaz/go-mod-outdated@latest
 	@go install github.com/jondot/goweight@latest
 	@go get -t -u golang.org/x/tools/cmd/cover
@@ -54,7 +56,7 @@ tmpfolder: ## Create the temporary folder.
 .PHONY: linux
 linux: tmpfolder
 linux: ## Build for GNU/Linux.
-	@GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME) .
+	@GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X main.version=$(build_tag) -X main.currentSha=$(current_sha)" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME) .
 	@tar -czf $(DEPLOY_FOLDER)/figurine_linux_$(TARGET).tar.gz $(DEPLOY_FOLDER)/$(RELEADE_NAME)
 	@cd $(DEPLOY_FOLDER) ; sha256sum figurine_linux_$(TARGET).tar.gz >> $(CHECKSUM_FILE)
 	@echo "Linux target:" $(DEPLOY_FOLDER)/figurine_linux_$(TARGET).tar.gz
@@ -63,7 +65,7 @@ linux: ## Build for GNU/Linux.
 .PHONY: darwin
 darwin: tmpfolder
 darwin: ## Build for Mac.
-	@GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME) .
+	@GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X main.version=$(build_tag) -X main.currentSha=$(current_sha)" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME) .
 	@tar -czf $(DEPLOY_FOLDER)/figurine_darwin_$(TARGET).tar.gz $(DEPLOY_FOLDER)/$(RELEADE_NAME)
 	@cd $(DEPLOY_FOLDER) ; sha256sum figurine_darwin_$(TARGET).tar.gz >> $(CHECKSUM_FILE)
 	@echo "Darwin target:" $(DEPLOY_FOLDER)/figurine_darwin_$(TARGET).tar.gz
@@ -72,7 +74,7 @@ darwin: ## Build for Mac.
 .PHONY: windows
 windows: tmpfolder
 windows: ## Build for windoze.
-	@GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME).exe .
+	@GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X main.version=$(build_tag) -X main.currentSha=$(current_sha)" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME).exe .
 	@zip -r $(DEPLOY_FOLDER)/figurine_windows_$(TARGET).zip $(DEPLOY_FOLDER)/$(RELEADE_NAME).exe
 	@cd $(DEPLOY_FOLDER) ; sha256sum figurine_windows_$(TARGET).zip >> $(CHECKSUM_FILE)
 	@echo "Windows target:" $(DEPLOY_FOLDER)/figurine_windows_$(TARGET).zip
@@ -80,7 +82,7 @@ windows: ## Build for windoze.
 
 .PHONY: release
 release: ## Create releases for Linux, Mac, and windoze.
-release: tmpfolder linux darwin windows
+release: linux darwin windows
 
 .PHONY: coverage
 coverage: ## Show the test coverage on browser.

@@ -22,6 +22,8 @@ var (
 	visualMode    bool
 	list          bool
 	sample        bool
+	version       = "development"
+	currentSha    = "N/A"
 )
 
 var rootCmd = &cobra.Command{
@@ -32,11 +34,14 @@ var rootCmd = &cobra.Command{
 			listFonts()
 			return nil
 		}
+		if len(args) > 0 && args[0] == "version" {
+			fmt.Printf("figurine version %s (%s)\n", version, currentSha)
+			return nil
+		}
 		return decorate(strings.Join(args, " "))
 	},
 }
 
-//go:generate statik -f -src=./bin ; go fmt ./statik/statik.go
 func main() {
 	cobra.CheckErr(rootCmd.Execute())
 }
@@ -50,6 +55,35 @@ func init() {
 	rootCmd.Flags().StringVarP(&fontName, "font", "f", "", "Choose a font name. Default is a random font.")
 	rootCmd.Flags().BoolVarP(&list, "list", "l", false, "Lists all available fonts.")
 	rootCmd.Flags().BoolVarP(&sample, "sample", "s", false, "Prints a sample with that font.")
+
+	rootCmd.SetUsageTemplate(`Usage:{{if .Runnable}}
+  {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}
+  {{.CommandPath}} [command]{{end}}{{if gt (len .Aliases) 0}}
+
+Aliases:
+  {{.NameAndAliases}}{{end}}{{if .HasExample}}
+
+Examples:
+{{.Example}}{{end}}{{if .HasAvailableSubCommands}}
+
+Available Commands:{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}
+  {{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}
+
+Available Commands:
+  help        Help about any command
+  version     Print binary version information
+
+Flags:
+{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}
+
+Global Flags:
+{{.InheritedFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasHelpSubCommands}}
+
+Additional help topics:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}
+  {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}
+
+Use "{{.CommandPath}} [command] --help" for more information about a command.{{end}}
+`)
 }
 
 func decorate(input string) error {

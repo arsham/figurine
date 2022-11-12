@@ -14,6 +14,7 @@ RELEADE_NAME=figurine
 DEPLOY_FOLDER=deploy
 CHECKSUM_FILE=CHECKSUM
 MAKEFLAGS += -j1
+LINUX_ARCH = amd64 arm arm64
 
 .PHONY: install
 install: ## Install the binary.
@@ -55,29 +56,30 @@ tmpfolder: ## Create the temporary folder.
 
 .PHONY: linux
 linux: tmpfolder
-linux: ## Build for GNU/Linux.
-	@GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X main.version=$(build_tag) -X main.currentSha=$(current_sha)" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME) .
-	@tar -czf $(DEPLOY_FOLDER)/figurine_linux_$(TARGET).tar.gz $(DEPLOY_FOLDER)/$(RELEADE_NAME)
-	@cd $(DEPLOY_FOLDER) ; sha256sum figurine_linux_$(TARGET).tar.gz >> $(CHECKSUM_FILE)
-	@echo "Linux target:" $(DEPLOY_FOLDER)/figurine_linux_$(TARGET).tar.gz
+linux: $(LINUX_ARCH)
+$(LINUX_ARCH): ## Build for GNU/Linux.
+	@GOOS=linux GOARCH=$@ CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X main.version=$(build_tag) -X main.currentSha=$(current_sha)" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME) .
+	@tar -czf $(DEPLOY_FOLDER)/figurine_linux_$@_$(TARGET).tar.gz $(DEPLOY_FOLDER)/$(RELEADE_NAME)
+	@cd $(DEPLOY_FOLDER) ; sha256sum figurine_linux_$@_$(TARGET).tar.gz >> $(CHECKSUM_FILE)
+	@echo "Linux target:" $(DEPLOY_FOLDER)/figurine_linux_$@_$(TARGET).tar.gz
 	@rm $(DEPLOY_FOLDER)/$(RELEADE_NAME)
 
 .PHONY: darwin
 darwin: tmpfolder
 darwin: ## Build for Mac.
 	@GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X main.version=$(build_tag) -X main.currentSha=$(current_sha)" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME) .
-	@tar -czf $(DEPLOY_FOLDER)/figurine_darwin_$(TARGET).tar.gz $(DEPLOY_FOLDER)/$(RELEADE_NAME)
-	@cd $(DEPLOY_FOLDER) ; sha256sum figurine_darwin_$(TARGET).tar.gz >> $(CHECKSUM_FILE)
-	@echo "Darwin target:" $(DEPLOY_FOLDER)/figurine_darwin_$(TARGET).tar.gz
+	@tar -czf $(DEPLOY_FOLDER)/figurine_darwin_amd64_$(TARGET).tar.gz $(DEPLOY_FOLDER)/$(RELEADE_NAME)
+	@cd $(DEPLOY_FOLDER) ; sha256sum figurine_darwin_amd64_$(TARGET).tar.gz >> $(CHECKSUM_FILE)
+	@echo "Darwin target:" $(DEPLOY_FOLDER)/figurine_darwin_amd64_$(TARGET).tar.gz
 	@rm $(DEPLOY_FOLDER)/$(RELEADE_NAME)
 
 .PHONY: windows
 windows: tmpfolder
 windows: ## Build for windoze.
 	@GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X main.version=$(build_tag) -X main.currentSha=$(current_sha)" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME).exe .
-	@zip -r $(DEPLOY_FOLDER)/figurine_windows_$(TARGET).zip $(DEPLOY_FOLDER)/$(RELEADE_NAME).exe
-	@cd $(DEPLOY_FOLDER) ; sha256sum figurine_windows_$(TARGET).zip >> $(CHECKSUM_FILE)
-	@echo "Windows target:" $(DEPLOY_FOLDER)/figurine_windows_$(TARGET).zip
+	@zip -r $(DEPLOY_FOLDER)/figurine_windows_amd64_$(TARGET).zip $(DEPLOY_FOLDER)/$(RELEADE_NAME).exe
+	@cd $(DEPLOY_FOLDER) ; sha256sum figurine_windows_amd64_$(TARGET).zip >> $(CHECKSUM_FILE)
+	@echo "Windows target:" $(DEPLOY_FOLDER)/figurine_windows_amd64_$(TARGET).zip
 	@rm $(DEPLOY_FOLDER)/$(RELEADE_NAME).exe
 
 .PHONY: release

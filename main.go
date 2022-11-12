@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache 2.0 license.
 // License can be found in the LICENSE file.
 
+// Package main is the entrypoint to the figurine binary.
 package main
 
 import (

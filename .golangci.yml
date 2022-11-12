@@ -1,6 +1,3 @@
-service:
-  golangci-lint-version: 1.45.x
-
 linters-settings:
   funlen:
     lines: 100
@@ -111,7 +108,6 @@ linters:
     - bidichk
     - bodyclose
     - cyclop
-    - deadcode
     - depguard
     - dogsled
     - dupl
@@ -144,7 +140,6 @@ linters:
     - rowserrcheck
     - sqlclosecheck
     - staticcheck
-    - structcheck
     - stylecheck
     - tenv
     - tparallel
@@ -152,6 +147,5 @@ linters:
     - unconvert
     - unparam
     - unused
-    - varcheck
     - wastedassign
     - whitespace

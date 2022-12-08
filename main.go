@@ -32,7 +32,7 @@ var rootCmd = &cobra.Command{
 	Short: "Print any text in style",
 	RunE: func(_ *cobra.Command, args []string) error {
 		if list {
-			listFonts()
+			listFonts(args)
 			return nil
 		}
 		if len(args) > 0 && args[0] == "version" {
@@ -101,8 +101,11 @@ func decorate(input string) error {
 	return figurine.Write(os.Stdout, input, fontName)
 }
 
-func listFonts() {
-	input := "Golang"
+func listFonts(args []string) {
+	if len(args) == 0 {
+		args = []string{"Golang"}
+	}
+	input := strings.Join(args, " ")
 	for _, f := range fontNames {
 		fmt.Println(f)
 		if sample {

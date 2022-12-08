@@ -95,5 +95,5 @@ coverage: ## Show the test coverage on browser.
 .PHONY: audit
 audit: ## Audit the code for updates, vulnerabilities and binary weight.
 	go list -u -m -json all | go-mod-outdated -update -direct
-	go list -json -m all | nancy sleuth
+	go list -json -deps | nancy sleuth
 	goweight | head -n 20

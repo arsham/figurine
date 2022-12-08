@@ -40,6 +40,7 @@ You can print available fonts:
 ```bash
 figurine -l
 figurine -l -s
+figurine -ls Sample Text
 ```
 
 To set a font:

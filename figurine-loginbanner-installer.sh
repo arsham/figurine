@@ -8,8 +8,8 @@ fi
 
 # Check the system architecture
 architecture=$(uname -m)
-if [ "$architecture" != "x86_64" ]; then
-    echo "This script is intended for x86_64 architecture only. Aborting."
+if [ "$architecture" != "x86_64" ] && [ "$architecture" != "aarch64" ]; then
+    echo "This script is intended for x86_64 or aarch64 (arm64) architectures only. Aborting."
     exit 1
 fi
 
@@ -39,19 +39,27 @@ if ! $force && command -v figurine &> /dev/null; then
     exit 1
 fi
 
+# Determine the appropriate file suffix based on the system architecture
+if [ "$architecture" == "x86_64" ]; then
+    file_suffix="figurine_linux_amd64.*"
+elif [ "$architecture" == "aarch64" ]; then
+    file_suffix="figurine_linux_arm64.*"
+fi
+
 # Create a temporary directory
 temp_dir=$(mktemp -d)
 
 # Download the latest release asset to the temporary directory
 curl -s "https://api.github.com/repos/${repo_owner}/${repo_name}/releases/latest" \
-| grep "figurine_linux_amd64.*tar.gz" \
+| grep "$file_suffix" \
 | cut -d : -f 2,3 \
 | tr -d \" \
 | wget -qi - -P "$temp_dir"
 
 # Extract the downloaded file
-if [ -e "${temp_dir}/figurine_linux_amd64"* ]; then
-    tar -xzf "${temp_dir}/figurine_linux_amd64"* -C "$temp_dir"
+ls ${temp_dir}
+if [ -e "${temp_dir}/figurine"* ]; then
+    tar -xzf "${temp_dir}/figurine"* -C "$temp_dir"
 else
     echo "Failed to extract the downloaded file. Exiting."
     rm -r "$temp_dir"
@@ -59,7 +67,7 @@ else
 fi
 
 # Move the binary to /usr/local/bin
-mv "${temp_dir}//deploy/figurine" "/usr/local/bin/"
+mv "${temp_dir}/deploy/figurine" "/usr/local/bin/"
 
 # Clean up temporary directory
 rm -r "$temp_dir"

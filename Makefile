@@ -56,8 +56,7 @@ tmpfolder: ## Create the temporary folder.
 
 .PHONY: linux
 linux: tmpfolder
-linux: $(LINUX_ARCH)
-$(LINUX_ARCH): ## Build for GNU/Linux.
+linux: $(LINUX_ARCH): ## Build for GNU/Linux.
 	@GOOS=linux GOARCH=$@ CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X main.version=$(build_tag) -X main.currentSha=$(current_sha)" -o $(DEPLOY_FOLDER)/$(RELEADE_NAME) .
 	@tar -czf $(DEPLOY_FOLDER)/figurine_linux_$@_$(TARGET).tar.gz $(DEPLOY_FOLDER)/$(RELEADE_NAME)
 	@cd $(DEPLOY_FOLDER) ; sha256sum figurine_linux_$@_$(TARGET).tar.gz >> $(CHECKSUM_FILE)
@@ -97,3 +96,15 @@ audit: ## Audit the code for updates, vulnerabilities and binary weight.
 	go list -u -m -json all | go-mod-outdated -update -direct
 	go list -json -deps | nancy sleuth
 	goweight | head -n 20
+
+.PHONY: docker-build
+docker-build: ## Build the Docker image.
+	docker build -t figurine:latest .
+
+.PHONY: docker-run
+docker-run: ## Run the Docker container.
+	docker run --rm -it figurine:latest
+
+.PHONY: docker-clean
+docker-clean: ## Remove the Docker image and container.
+	docker rmi figurine:latest

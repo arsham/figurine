@@ -22,7 +22,7 @@ test:
 
 clean:
 	go clean
-	rm -f $(BINARY_NAME)
+	[ -f $(BINARY_NAME) ] && rm -f $(BINARY_NAME) || true
 	rm -rf $(OUTPUT_DIR)
 
 # Multi-platform builds

@@ -160,13 +160,37 @@ download_binary() {
   echo -e "${BLUE}Extracting archive...${NC}"
   tar xzf "$filename"
   
-  # Find the binary in the extracted content
-  local extracted_binary=$(find . -name "$BINARY_NAME*" -type f -executable | head -1)
+  # Find the binary in the extracted content - using more compatible approach
+  local extracted_binary=""
+  
+  # First look for an exact match with the binary name
+  if [ -f "$BINARY_NAME" ]; then
+    extracted_binary="$BINARY_NAME"
+  # Then check if it exists with OS and ARCH suffix
+  elif [ -f "${BINARY_NAME}_${OS}_${ARCH}" ]; then
+    extracted_binary="${BINARY_NAME}_${OS}_${ARCH}"
+  else
+    # Fall back to a more generic search using find without -executable flag
+    if [ "$OS" = "windows" ]; then
+      # For Windows, look for .exe files
+      extracted_binary=$(find . -type f -name "${BINARY_NAME}*.exe" | head -1)
+    else
+      # For Unix-like systems, just look for the binary name
+      extracted_binary=$(find . -type f -name "${BINARY_NAME}*" | grep -v ".tar.gz" | head -1)
+    fi
+  fi
   
   if [ -z "$extracted_binary" ]; then
     echo -e "${RED}Error: Could not locate the binary in the archive.${NC}"
+    echo -e "${YELLOW}Contents of extracted archive:${NC}"
+    ls -la
     exit 1
   fi
+  
+  echo -e "${GREEN}Found binary: $extracted_binary${NC}"
+  
+  # Make sure it's executable
+  chmod +x "$extracted_binary"
   
   # Move to a standard name for installation
   mv "$extracted_binary" "$BINARY_NAME"

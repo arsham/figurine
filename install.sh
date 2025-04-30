@@ -100,23 +100,46 @@ detect_platform() {
 get_latest_release() {
   echo -e "${BLUE}Fetching latest release information...${NC}"
   
+  # Initialize RELEASE_INFO as empty
+  RELEASE_INFO=""
+  
+  # Try to get release info with proper error handling
   if command -v curl &> /dev/null; then
-    RELEASE_INFO=$(curl -s "$LATEST_RELEASE_URL")
+    # Use -f to make curl exit with non-zero status on HTTP errors
+    RELEASE_INFO=$(curl -s -f "$LATEST_RELEASE_URL" || echo "")
+    if [ -z "$RELEASE_INFO" ]; then
+      echo -e "${RED}Error: Failed to fetch release info from $LATEST_RELEASE_URL${NC}"
+      exit 1
+    fi
   elif command -v wget &> /dev/null; then
-    RELEASE_INFO=$(wget -qO- "$LATEST_RELEASE_URL")
+    # Use --spider first to check if URL exists
+    if ! wget --spider -q "$LATEST_RELEASE_URL"; then
+      echo -e "${RED}Error: Failed to fetch release info from $LATEST_RELEASE_URL${NC}"
+      exit 1
+    fi
+    RELEASE_INFO=$(wget -q -O - "$LATEST_RELEASE_URL")
   else
     echo -e "${RED}Error: curl or wget is required but not installed.${NC}"
     exit 1
   fi
   
-  RELEASE_TAG=$(echo "$RELEASE_INFO" | grep -o '"tag_name": "[^"]*' | head -1 | cut -d'"' -f4)
-  
-  if [ -z "$RELEASE_TAG" ]; then
-    echo -e "${RED}Error: Could not determine latest release.${NC}"
-    exit 1
+  # Try to parse the release tag name using jq if available, otherwise fall back to grep/cut
+  if command -v jq &> /dev/null; then
+    RELEASE_TAG=$(echo "$RELEASE_INFO" | jq -r '.tag_name')
+    echo -e "${BLUE}Using jq for JSON parsing${NC}"
+  else
+    echo -e "${YELLOW}jq not found, falling back to basic parsing${NC}"
+    RELEASE_TAG=$(echo "$RELEASE_INFO" | grep -o '"tag_name": "[^"]*' | head -1 | cut -d'"' -f4)
   fi
   
-  echo -e "${GREEN}Latest release: $RELEASE_TAG${NC}"
+  if [ -z "$RELEASE_TAG" ] || [ "$RELEASE_TAG" = "null" ]; then
+    # If release tag couldn't be determined, try to use v1.0.0 as a fallback
+    echo -e "${YELLOW}Warning: Could not determine latest release tag.${NC}"
+    echo -e "${YELLOW}Trying fallback to v1.0.0...${NC}"
+    RELEASE_TAG="v1.0.0"
+  fi
+  
+  echo -e "${GREEN}Selected release: $RELEASE_TAG${NC}"
 }
 
 # Download the appropriate binary

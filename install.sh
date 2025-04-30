@@ -167,6 +167,13 @@ download_binary() {
   echo -e "${BLUE}Verifying checksum...${NC}"
   if command -v sha256sum &> /dev/null; then
     local expected_checksum=$(grep "$filename" checksums.txt | awk '{print $1}')
+    
+    # Check if the checksum entry exists
+    if [ -z "$expected_checksum" ]; then
+      echo -e "${RED}Checksum entry not found for $filename.${NC}"
+      exit 1
+    fi
+    
     local actual_checksum=$(sha256sum "$filename" | awk '{print $1}')
     
     if [ "$expected_checksum" != "$actual_checksum" ]; then

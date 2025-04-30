@@ -38,7 +38,7 @@ parse_args() {
       --help)
         echo "Usage: $0 [options]"
         echo "Options:"
-        echo "  --repo OWNER/REPO    Specify a GitHub repository (e.g., arsham/figurine)"
+        echo "  --repo OWNER/REPO    Specify a GitHub repository (e.g., yacosta738/figurine)"
         echo "  --help               Show this help message"
         exit 0
         ;;
@@ -109,7 +109,7 @@ use_default_repo() {
   local default_repo="figurine"
   GITHUB_REPO="https://github.com/$default_owner/$default_repo"
   LATEST_RELEASE_URL="https://api.github.com/repos/$default_owner/$default_repo/releases/latest"
-  echo -e "${YELLOW}Using default repository: $GITHUB_REPO${NC}"
+  echo -e "${YELLOW} ⚠️ Using default repository: $GITHUB_REPO${NC}"
 }
 
 # Function to clean up temporary files

@@ -105,7 +105,7 @@ get_repo_info() {
 
 # Use default repository settings if dynamic detection fails
 use_default_repo() {
-  local default_owner="arsham"
+  local default_owner="yacosta738"
   local default_repo="figurine"
   GITHUB_REPO="https://github.com/$default_owner/$default_repo"
   LATEST_RELEASE_URL="https://api.github.com/repos/$default_owner/$default_repo/releases/latest"

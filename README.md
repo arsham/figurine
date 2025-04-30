@@ -13,8 +13,9 @@ Print your name in style
 
 1. [Installation](#installation)
 2. [Usage](#usage)
-3. [See Also](#see-also)
-4. [License](#license)
+3. [Docker](#docker)
+4. [See Also](#see-also)
+5. [License](#license)
 
 ## Installation
 
@@ -58,6 +59,26 @@ figurine -h
 This application is very light weight, so feel free to add it to your
 .zshrc/.bashrc file, so each time you open a new shell it shows you a nice
 message.
+
+## Docker
+
+To build the Docker image:
+
+```bash
+make docker-build
+```
+
+To run the Docker container:
+
+```bash
+make docker-run
+```
+
+To clean up the Docker image and container:
+
+```bash
+make docker-clean
+```
 
 ## See Also
 

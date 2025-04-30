@@ -13,6 +13,44 @@ YELLOW='\033[0;33m'
 BOLD='\033[1m'
 NC='\033[0m' # No Color
 
+# Variables
+INSTALL_DIR="/usr/local/bin"
+WINDOWS_INSTALL_DIR="$HOME/bin"
+TEMP_DIR=$(mktemp -d)
+RELEASE_TAG=""
+OS=""
+ARCH=""
+BINARY_NAME="figurine"
+GITHUB_REPO=""
+LATEST_RELEASE_URL=""
+CUSTOM_REPO=""
+
+# Parse command line arguments
+parse_args() {
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in
+      --repo)
+        CUSTOM_REPO="$2"
+        shift # past argument
+        shift # past value
+        ;;
+      --help)
+        echo "Usage: $0 [options]"
+        echo "Options:"
+        echo "  --repo OWNER/REPO    Specify a GitHub repository (e.g., arsham/figurine)"
+        echo "  --help               Show this help message"
+        exit 0
+        ;;
+      *)
+        # Unknown option
+        echo -e "${YELLOW}Warning: Unknown option $1${NC}"
+        shift
+        ;;
+    esac
+  done
+}
+
 # Function to print banner
 print_banner() {
   echo -e "${GREEN}"
@@ -24,6 +62,26 @@ print_banner() {
 
 # Get repo information dynamically if possible, otherwise use default
 get_repo_info() {
+  # If a custom repo was specified, use it
+  if [ -n "$CUSTOM_REPO" ]; then
+    # Parse the owner/repo format
+    if [[ "$CUSTOM_REPO" =~ ^([^/]+)/([^/]+)$ ]]; then
+      local owner=${BASH_REMATCH[1]}
+      local repo=${BASH_REMATCH[2]}
+      GITHUB_REPO="https://github.com/$owner/$repo"
+      LATEST_RELEASE_URL="https://api.github.com/repos/$owner/$repo/releases/latest"
+      echo -e "${BLUE}Using specified repository: $GITHUB_REPO${NC}"
+      return
+    else
+      echo -e "${YELLOW}Invalid repository format. Using git detection or defaults.${NC}"
+    fi
+  fi
+
+  # Change to the script's directory to ensure .git is found if it exists
+  local script_dir
+  script_dir="$(cd "$(dirname "$0")" && pwd)"
+  cd "$script_dir" 2>/dev/null || true
+  
   if command -v git &> /dev/null && [ -d .git ]; then
     # Get remote origin URL
     local remote_url=$(git config --get remote.origin.url)
@@ -53,20 +111,6 @@ use_default_repo() {
   LATEST_RELEASE_URL="https://api.github.com/repos/$default_owner/$default_repo/releases/latest"
   echo -e "${YELLOW}Using default repository: $GITHUB_REPO${NC}"
 }
-
-# Variables
-INSTALL_DIR="/usr/local/bin"
-WINDOWS_INSTALL_DIR="$HOME/bin"
-TEMP_DIR=$(mktemp -d)
-RELEASE_TAG=""
-OS=""
-ARCH=""
-BINARY_NAME="figurine"
-GITHUB_REPO=""
-LATEST_RELEASE_URL=""
-
-# Initialize repo info
-get_repo_info
 
 # Function to clean up temporary files
 cleanup() {
@@ -363,6 +407,7 @@ show_demo() {
 main() {
   print_banner
   detect_platform
+  get_repo_info  # Initialize repository information before fetching releases
   get_latest_release
   download_binary
   install_binary
@@ -371,4 +416,6 @@ main() {
   echo -e "${GREEN}Installation complete!${NC}"
 }
 
+# Parse arguments and run the main function
+parse_args "$@"
 main

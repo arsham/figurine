@@ -1,6 +1,9 @@
 #!/bin/bash
 
-set -e
+# Enable strict mode
+set -e         # Exit immediately if a command fails
+set -o pipefail # Pipeline fails if any command fails
+set -u         # Treat unset variables as errors
 
 # Colors
 RED='\033[0;31m'
@@ -9,6 +12,15 @@ BLUE='\033[0;34m'
 YELLOW='\033[0;33m'
 BOLD='\033[1m'
 NC='\033[0m' # No Color
+
+# Function to print banner
+print_banner() {
+  echo -e "${GREEN}"
+  echo "==============================================="
+  echo -e "        ${BOLD}Figurine Installer${NC}${GREEN}"
+  echo "==============================================="
+  echo -e "${NC}"
+}
 
 # Get repo information dynamically if possible, otherwise use default
 get_repo_info() {
@@ -63,15 +75,6 @@ cleanup() {
 }
 
 trap cleanup EXIT
-
-# Function to print banner
-print_banner() {
-  echo -e "${GREEN}"
-  echo "==============================================="
-  echo "        Figurine Installer"
-  echo "==============================================="
-  echo -e "${NC}"
-}
 
 # Function to detect OS and architecture
 detect_platform() {

@@ -6,10 +6,12 @@ package figurine
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"io"
 	"strconv"
 	"strings"
+	"unicode/utf8"
 )
 
 const (
@@ -106,7 +108,7 @@ func readGlyph(scanner *bufio.Scanner, height int) ([]string, error) {
 		if !scanner.Scan() {
 			return nil, scanner.Err()
 		}
-		glyph[i] = trimFIGletEndmark(scanner.Text())
+		glyph[i] = fontRowString(trimFIGletEndmark(scanner.Bytes()))
 		if len(glyph[i]) > width {
 			width = len(glyph[i])
 		}
@@ -117,16 +119,32 @@ func readGlyph(scanner *bufio.Scanner, height int) ([]string, error) {
 	return glyph, nil
 }
 
-func trimFIGletEndmark(line string) string {
-	if line == "" {
+func trimFIGletEndmark(line []byte) []byte {
+	line = bytes.TrimSuffix(line, []byte("\r"))
+	if len(line) == 0 {
 		return line
 	}
 	endmark := line[len(line)-1]
 	line = line[:len(line)-1]
-	if line != "" && line[len(line)-1] == endmark {
+	if len(line) > 0 && line[len(line)-1] == endmark {
 		line = line[:len(line)-1]
 	}
 	return line
+}
+
+func fontRowString(data []byte) string {
+	if utf8.Valid(data) {
+		return string(data)
+	}
+	return latin1String(data)
+}
+
+func latin1String(data []byte) string {
+	var out strings.Builder
+	for _, b := range data {
+		out.WriteRune(rune(b))
+	}
+	return out.String()
 }
 
 func (font figletFont) glyphFor(char rune) []string {

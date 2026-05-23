@@ -80,3 +80,44 @@ func TestRunHelpWritesUsefulUsage(t *testing.T) {
 		}
 	}
 }
+
+func TestListAvailableFontsHidesLegacyAliases(t *testing.T) {
+	var stdout bytes.Buffer
+
+	listAvailableFonts(&stdout, nil, false)
+	output := stdout.String()
+	for _, want := range []string{"AMC 3 Line.flf\n", "Big Chief.flf\n", "s-relief.flf\n"} {
+		if !strings.Contains(output, want) {
+			t.Fatalf("font list does not contain %q", want)
+		}
+	}
+	for _, unwanted := range []string{"3d.flf", "amc3line.flf", "bigchief.flf", "broadway_kb.flf"} {
+		if strings.Contains(output, unwanted) {
+			t.Fatalf("font list contains legacy alias %q", unwanted)
+		}
+	}
+}
+
+func TestDecorateAcceptsLegacyFontAliases(t *testing.T) {
+	var stdout bytes.Buffer
+
+	err := decorate(&stdout, "hello", "amc3line.flf", true)
+	if err != nil {
+		t.Fatalf("decorate with legacy font alias: %v", err)
+	}
+	if !strings.Contains(stdout.String(), "Font: AMC 3 Line.flf\n") {
+		t.Fatalf("visual output did not use canonical font name: %q", stdout.String())
+	}
+}
+
+func TestDecorateAcceptsCanonicalFontNames(t *testing.T) {
+	var stdout bytes.Buffer
+
+	err := decorate(&stdout, "hello", "AMC 3 Line.flf", true)
+	if err != nil {
+		t.Fatalf("decorate with canonical font name: %v", err)
+	}
+	if !strings.Contains(stdout.String(), "Font: AMC 3 Line.flf\n") {
+		t.Fatalf("visual output did not use canonical font name: %q", stdout.String())
+	}
+}

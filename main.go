@@ -228,11 +228,20 @@ func decorate(out io.Writer, input, fontName string, visualMode bool) error {
 	if fontName == "" {
 		index := rand.IntN(len(fontNames))
 		fontName = fontNames[index]
+	} else {
+		fontName = canonicalFontName(fontName)
 	}
 	if visualMode {
 		_, _ = fmt.Fprintf(out, "Font: %s\n", fontName)
 	}
 	return figurine.Write(out, input, fontName)
+}
+
+func canonicalFontName(fontName string) string {
+	if canonicalName, ok := fontAliases[fontName]; ok {
+		return canonicalName
+	}
+	return fontName
 }
 
 func listAvailableFonts(out io.Writer, args []string, sample bool) {

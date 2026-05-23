@@ -5,12 +5,35 @@
 package figurine_test
 
 import (
+	"bytes"
 	"fmt"
 	"io"
+	"regexp"
+	"strings"
 	"testing"
 
 	"github.com/arsham/figurine/v2/figurine"
 )
+
+func TestWriteRendersWhimsyHyphen(t *testing.T) {
+	var out bytes.Buffer
+
+	err := figurine.Write(&out, "-", "Whimsy.flf")
+	if err != nil {
+		t.Fatalf("write whimsy hyphen: %v", err)
+	}
+
+	plain := stripANSI(out.String())
+	if !strings.Contains(plain, ".d8888b.") {
+		t.Fatalf("hyphen output did not contain visible glyph: %q", plain)
+	}
+}
+
+var ansiEscape = regexp.MustCompile(`\x1b\[[0-9;]*m`)
+
+func stripANSI(s string) string {
+	return ansiEscape.ReplaceAllString(s, "")
+}
 
 func BenchmarkGenerationPart(b *testing.B) {
 	bcs := []string{

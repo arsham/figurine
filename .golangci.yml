@@ -67,7 +67,6 @@ linters:
             - $gostd
             - github.com/arsham/figurine/v2
             - github.com/arsham/rainbow/v2
-            - github.com/common-nighthawk/go-figure
     godot:
       capital: true
     misspell:

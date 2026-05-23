@@ -2,10 +2,7 @@ module github.com/arsham/figurine/v2
 
 go 1.26.2
 
-require (
-	github.com/arsham/rainbow/v2 v2.0.0
-	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
-)
+require github.com/arsham/rainbow/v2 v2.0.0
 
 require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect

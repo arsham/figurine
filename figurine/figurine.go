@@ -14,7 +14,6 @@ import (
 	"path"
 
 	"github.com/arsham/rainbow/v2/rainbow"
-	figure "github.com/common-nighthawk/go-figure"
 )
 
 //go:embed fonts
@@ -28,9 +27,11 @@ func Write(out io.Writer, msg, fontName string) error {
 		return fmt.Errorf("error locating font %s: %w", fontName, err)
 	}
 
-	buf := &bytes.Buffer{}
-	myFigure := figure.NewFigureWithFont(msg, font, true)
-	figure.Write(buf, myFigure)
+	figletOutput, err := renderFIGlet(font, msg)
+	if err != nil {
+		return fmt.Errorf("error rendering font %s: %w", fontName, err)
+	}
+	buf := bytes.NewBufferString(figletOutput)
 	l := &rainbow.Light{
 		Writer: out,
 		Seed:   rand.Int64N(256),

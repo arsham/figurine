@@ -6,7 +6,10 @@ package main
 
 import (
 	"bytes"
+	"os"
+	"path/filepath"
 	"slices"
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -120,4 +123,38 @@ func TestDecorateAcceptsCanonicalFontNames(t *testing.T) {
 	if !strings.Contains(stdout.String(), "Font: AMC 3 Line.flf\n") {
 		t.Fatalf("visual output did not use canonical font name: %q", stdout.String())
 	}
+}
+
+func TestListedFontsHaveVisibleHyphenGlyph(t *testing.T) {
+	for _, fontName := range fontNames {
+		fontName := fontName
+		t.Run(fontName, func(t *testing.T) {
+			data, err := os.ReadFile(filepath.Join("figurine", "fonts", fontName))
+			if err != nil {
+				t.Fatalf("read font: %v", err)
+			}
+			if blankHyphenGlyph(data) {
+				t.Fatal("hyphen glyph is blank")
+			}
+		})
+	}
+}
+
+func blankHyphenGlyph(data []byte) bool {
+	lines := bytes.Split(data, []byte("\n"))
+	fields := strings.Fields(string(bytes.TrimRight(lines[0], "\r")))
+	height, _ := strconv.Atoi(fields[1])
+	commentLines, _ := strconv.Atoi(fields[5])
+	start := 1 + commentLines + (int('-')-32)*height
+	hardblank := fields[0][len(fields[0])-1:]
+
+	for _, line := range lines[start : start+height] {
+		line = bytes.TrimRight(line, "\r")
+		line = bytes.TrimRight(line, "@")
+		line = bytes.ReplaceAll(line, []byte(hardblank), []byte(" "))
+		if strings.TrimSpace(string(line)) != "" {
+			return false
+		}
+	}
+	return true
 }
